@@ -17,6 +17,8 @@ public class CreateProductCommand : IRequest<ProductResult>
     /// Gets or sets the price for the product.
     /// </summary>
     public double Price { get; set; }
+    
+    public int StockQuantity { get; set; }
 
     public ValidationResultDetail Validate()
     {

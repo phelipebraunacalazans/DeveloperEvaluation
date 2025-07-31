@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Validation;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
@@ -46,10 +47,12 @@ public class Product : BaseEntity
     /// </summary>
     /// <param name="name">Name of product.</param>
     /// <param name="price">Price of product.</param>
-    public void Update(string name, decimal price)
+    public void Update(string name, decimal price, int stockQuantity)
     {
         Name = name;
         Price = price;
+        Price = price;
+        StockQuantity = stockQuantity;
         UpdatedAt = DateTime.UtcNow;
     }
     

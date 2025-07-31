@@ -9,13 +9,18 @@
         /// Obtém o identificador único do usuário.
         /// </summary>
         /// <returns>O ID do usuário como uma string.</returns>
-        public string Id { get; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Obtém o nome de usuário.
         /// </summary>
         /// <returns>O nome de usuário.</returns>
         public string Username { get; }
+        
+        /// <summary>
+        /// Gets e-mail from user.
+        /// </summary>
+        string Email { get; }
 
         /// <summary>
         /// Obtém o papel/função do usuário no sistema.
