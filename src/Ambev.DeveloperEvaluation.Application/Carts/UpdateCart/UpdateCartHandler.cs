@@ -3,6 +3,7 @@ using Ambev.DeveloperEvaluation.Common.Interfaces.Repositories;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Services;
@@ -18,6 +19,7 @@ public class UpdateCartHandler: IRequestHandler<UpdateCartCommand, CartResult>
     private readonly ICartRepository _cartRepository;
     private readonly IUserRepository _userRepository;
     private readonly IProductRepository _productRepository;
+    private readonly IEventNotification _eventNotifier;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly SaleDiscountService _saleDiscountService;
     private readonly SaleLimitReachedSpecification _saleLimitReachedSpecification;
@@ -41,6 +43,7 @@ public class UpdateCartHandler: IRequestHandler<UpdateCartCommand, CartResult>
         SaleDiscountService saleDiscountService,
         SaleLimitReachedSpecification saleLimitReachedSpecification,
         IUnitOfWork unitOfWork,
+        IEventNotification eventNotifier,
         ICurrentUserAccessor currentUserAccessor,
         IMapper mapper)
     {
@@ -51,6 +54,7 @@ public class UpdateCartHandler: IRequestHandler<UpdateCartCommand, CartResult>
         _currentUserAccessor = currentUserAccessor;
         _saleLimitReachedSpecification = saleLimitReachedSpecification;
         _unitOfWork = unitOfWork;
+        _eventNotifier = eventNotifier;
         _mapper = mapper;
     }
 
@@ -103,6 +107,8 @@ public class UpdateCartHandler: IRequestHandler<UpdateCartCommand, CartResult>
         _saleDiscountService.ApplyDiscounts(cart);
 
         await _unitOfWork.ApplyChangesAsync(cancellationToken);
+        await _eventNotifier.NotifyAsync(SaleModifiedEvent.CreateFrom(cart));
+        
         return _mapper.Map<CartResult>(cart);
     }
 
