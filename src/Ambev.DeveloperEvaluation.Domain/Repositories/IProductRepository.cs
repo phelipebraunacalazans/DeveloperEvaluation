@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Common.Repositories.Pagination;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories;
 
@@ -37,9 +38,10 @@ public interface IProductRepository
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     
     /// <summary>
-    /// Retrieves all products that contain the name.
+    /// Retrieves all paginated products.
     /// </summary>
+    /// <param name="query">Query to paginate</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The list of products</returns>
-    Task<ICollection<Product>> GetAllAsync(CancellationToken cancellationToken = default);
+    /// <returns>The list of paginated products</returns>
+    Task<PaginationQueryResult<Product>> PaginateAsync(PaginationQuery query, CancellationToken cancellationToken = default);
 }

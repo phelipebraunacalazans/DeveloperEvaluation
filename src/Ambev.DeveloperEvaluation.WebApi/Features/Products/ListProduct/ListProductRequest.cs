@@ -4,5 +4,5 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProduct;
 
 public class ListProductRequest : PaginatedRequest
 {
-    
+    public string Name { get; set; }
 }
