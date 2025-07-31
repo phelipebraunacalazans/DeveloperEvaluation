@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 
-public class UpdateProductCommand : IRequest<UpdateProductResult>
+public class UpdateProductCommand : IRequest<ProductResult>
 {
     /// <summary>
     /// The unique identifier of the product to retrieve

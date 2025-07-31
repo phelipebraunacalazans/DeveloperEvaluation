@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 /// <summary>
 /// Command for creating a new product.
 /// </summary>
-public class CreateProductCommand : IRequest<CreateProductResult>
+public class CreateProductCommand : IRequest<ProductResult>
 {
     /// <summary>
     /// Gets or sets the name of the product to be created.

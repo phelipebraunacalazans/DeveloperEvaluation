@@ -2,7 +2,7 @@
 
 namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct;
 
-public class GetProductCommand : IRequest<GetProductResult>
+public class GetProductCommand : IRequest<ProductResult>
 {
     /// <summary>
     /// The unique identifier of the product to retrieve.

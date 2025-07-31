@@ -17,5 +17,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(u => u.Price).IsRequired().HasPrecision(10, 2);
         builder.Property(u => u.CreatedAt).IsRequired();
         builder.Property(u => u.UpdatedAt).IsRequired(false);
+        builder.Property(u => u.StockQuantity).IsRequired();
     }
 }
