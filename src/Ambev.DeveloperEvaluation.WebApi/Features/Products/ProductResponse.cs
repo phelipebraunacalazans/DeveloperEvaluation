@@ -1,6 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
 
-public class GetProductResult
+public class ProductResponse
 {
     /// <summary>
     /// The unique identifier of the product.
@@ -10,10 +10,10 @@ public class GetProductResult
     /// <summary>
     /// The product's name.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = default!;
 
     /// <summary>
-    /// The ´product's price.
+    /// The product's price.
     /// </summary>
-    public double Price { get; set; }
+    public decimal Price { get; set; }
 }

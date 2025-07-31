@@ -27,6 +27,14 @@ public class ProductRepository(DefaultContext context) : IProductRepository
     }
 
     /// <inheritdoc/>
+    public async Task<ICollection<Product>> ListByIdsAsync(Guid[] ids, CancellationToken cancellationToken = default)
+    {
+        return await context.Products
+            .Where(p => ids.Contains(p.Id))
+            .ToArrayAsync(cancellationToken);
+    }
+    
+    /// <inheritdoc/>
     public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => await context.Products.FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
 

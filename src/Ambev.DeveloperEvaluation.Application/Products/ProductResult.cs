@@ -1,19 +1,19 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+﻿namespace Ambev.DeveloperEvaluation.Application.Products;
 
-public class GetProductResponse
+public class ProductResult
 {
     /// <summary>
-    /// The unique identifier of the created product
+    /// The unique identifier of the product.
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Gets the product's title.
+    /// The product's name.
     /// </summary>
     public string Name { get; set; } = default!;
 
     /// <summary>
-    /// Gets the product's full price.
+    /// The product's price.
     /// </summary>
     public decimal Price { get; set; }
 }

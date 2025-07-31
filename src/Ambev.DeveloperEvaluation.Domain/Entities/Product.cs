@@ -18,23 +18,28 @@ public class Product : BaseEntity
     /// Gets the product's name.
     /// Must not be null or empty.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Name { get;  private set; }
 
     /// <summary>
     /// Gets the product's full price.
     /// Must be greater than zero.
     /// </summary>
-    public decimal Price { get; set; }
+    public decimal Price { get; private set; }
 
     /// <summary>
     /// Gets the date and time when the product was created.
     /// </summary>
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get;private set; }
 
     /// <summary>
     /// Gets the date and time of the last update to the product's information.
     /// </summary>
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; private set; }
+    
+    /// <summary>
+    /// Gets the stock quantity
+    /// </summary>
+    public int StockQuantity { get; private set; }
 
     /// <summary>
     /// Change name and price.
@@ -45,6 +50,42 @@ public class Product : BaseEntity
     {
         Name = name;
         Price = price;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    
+    /// <summary>
+    /// Decrease the product quantity in storage.
+    /// </summary>
+    /// <param name="quantity">Quantity to reduce</param>
+    public void DecreaseQuantity(int quantity)
+    {
+        if (quantity <= 0)
+        {
+            throw new ArgumentOutOfRangeException("Quantity must be positive value to the decrease quantity.");
+        }
+
+        StockQuantity -= quantity;
+
+        if (StockQuantity < 0)
+        {
+            throw new DomainException($"Stock quantity must not be negative #{Id}, current stock: {StockQuantity}, try to decrease {quantity}");
+        }
+
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Increase the product quantity in storage.
+    /// </summary>
+    /// <param name="quantity">Quantity to increase</param>
+    public void IncreaseQuantity(int quantity)
+    {
+        if (quantity <= 0)
+        {
+            throw new ArgumentOutOfRangeException("Quantity must be positive value to the increase quantity.");
+        }
+
+        StockQuantity += quantity;
         UpdatedAt = DateTime.UtcNow;
     }
 

@@ -10,6 +10,6 @@ public class UpdateProductProfile : Profile
     /// </summary>
     public UpdateProductProfile()
     {
-        CreateMap<Product, UpdateProductResult>();
+        CreateMap<Product, ProductResult>();
     }
 }
