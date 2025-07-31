@@ -1,6 +1,8 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Products.ListProduct;
+﻿using Ambev.DeveloperEvaluation.Common.Repositories.Pagination;
 
-public class ListProductResult
+namespace Ambev.DeveloperEvaluation.Application.Products.ListProduct;
+
+public class ListProductResult : PaginationQueryResult<ProductResult>
 {
     /// <summary>
     /// The list of products.

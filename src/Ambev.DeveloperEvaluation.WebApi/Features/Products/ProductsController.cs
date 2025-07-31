@@ -99,10 +99,10 @@ public class ProductsController : BaseController
     {
         var command = _mapper.Map<ListProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
-        var items = _mapper.Map<ICollection<ProductResponse>>(response.Products);
+        var items = _mapper.Map<ICollection<ProductResponse>>(response.Items);
 
         return OkPaginated<ProductResponse>(
-            new(items, response.Products.Count, request));
+            new(items, response.TotalItems, request));
     }
 
     /// <summary>

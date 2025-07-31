@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Common.Repositories.Pagination;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.ListProduct;
@@ -11,5 +12,6 @@ public class ListProductProfile : Profile
     public ListProductProfile()
     {
         CreateMap<Product, ProductResult>();
+        CreateMap<PaginationQueryResult<Product>, ListProductResult>();
     }
 }
