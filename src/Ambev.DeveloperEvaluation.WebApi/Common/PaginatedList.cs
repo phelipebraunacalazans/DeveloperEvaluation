@@ -12,6 +12,12 @@ public class PaginatedList<T> : List<T>
     public bool HasPrevious => CurrentPage > 1;
     public bool HasNext => CurrentPage < TotalPages;
 
+    public PaginatedList(ICollection<T> items, int count, PaginatedRequest request) :
+        this(items.ToList(), count, request.Page.GetValueOrDefault(), request.Size.GetValueOrDefault())
+    {
+
+    }
+
     public PaginatedList(List<T> items, int count, int pageNumber, int pageSize)
     {
         TotalCount = count;
