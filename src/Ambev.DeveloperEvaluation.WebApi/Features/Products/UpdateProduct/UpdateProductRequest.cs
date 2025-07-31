@@ -16,4 +16,6 @@ public class UpdateProductRequest
     /// Gets the product's full price.
     /// </summary>
     public decimal Price { get; set; }
+    
+    public int StockQuantity { get; set; }
 }

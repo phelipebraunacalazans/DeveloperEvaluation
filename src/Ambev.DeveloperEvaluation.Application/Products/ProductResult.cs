@@ -16,4 +16,6 @@ public class ProductResult
     /// The product's price.
     /// </summary>
     public decimal Price { get; set; }
+    
+    public int StockQuantity { get; set; }
 }

@@ -11,4 +11,9 @@ public class CreateProductRequest
     /// Gets the product's full price.
     /// </summary>
     public decimal Price { get; set; }
+    
+    /// <summary>
+    /// Gets the product's full price.
+    /// </summary>
+    public int StockQuantity { get; set; }
 }

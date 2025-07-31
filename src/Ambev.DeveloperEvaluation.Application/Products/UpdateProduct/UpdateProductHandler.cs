@@ -50,7 +50,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Produc
         if (existingProduct is not null && existingProduct.Id != command.Id)
             throw new InvalidOperationException($"Product with name {command.Name} already exists");
 
-        product.Update(command.Name, command.Price);
+        product.Update(command.Name, command.Price, command.StockQuantity);
 
         await _unitOfWork.ApplyChangesAsync(cancellationToken);
         return _mapper.Map<ProductResult>(product);

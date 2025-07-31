@@ -1,6 +1,8 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Interfaces.Repositories;
+using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Services;
 using Ambev.DeveloperEvaluation.Domain.Specifications;
@@ -15,6 +17,7 @@ public class CreateCartHandler : IRequestHandler<CreateCartCommand, CartResult>
     private readonly ICartRepository _cartRepository;
     private readonly IUserRepository _userRepository;
     private readonly IProductRepository _productRepository;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly SaleDiscountService _saleDiscountService;
     private readonly SaleRandomNumberGeneratorService _saleNumberGenerator;
     private readonly SaleLimitReachedSpecification _saleLimitReachedSpecification;
@@ -36,6 +39,7 @@ public class CreateCartHandler : IRequestHandler<CreateCartCommand, CartResult>
         ICartRepository cartRepository,
         IUserRepository userRepository,
         IProductRepository productRepository,
+        ICurrentUserAccessor currentUserAccessor,
         SaleDiscountService saleDiscountService,
         SaleRandomNumberGeneratorService saleNumberGenerator,
         SaleLimitReachedSpecification saleLimitReachedSpecification,
@@ -50,6 +54,7 @@ public class CreateCartHandler : IRequestHandler<CreateCartCommand, CartResult>
         _saleLimitReachedSpecification = saleLimitReachedSpecification;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     /// <summary>
@@ -66,15 +71,16 @@ public class CreateCartHandler : IRequestHandler<CreateCartCommand, CartResult>
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var loggedUser = await _userRepository.GetByIdAsync(new Guid("c2a03e75-c2e6-40d0-a2f5-105e9610bde6"), cancellationToken);
-        if (loggedUser is null || loggedUser.Status is not UserStatus.Active)
+        var currentUserInfo = _currentUserAccessor.GetCurrentUser();
+        var currentUser = await _userRepository.GetByIdAsync(currentUserInfo.Id, cancellationToken);
+        if (currentUser is null || currentUser.Status is not UserStatus.Active)
         {
             throw new ValidationException(
             [
                 new(nameof(command.UserId), "Not found user."),
             ]);
         }
-
+        
         var customerUser = await _userRepository.GetByIdAsync(command.UserId, cancellationToken);
         if (customerUser is null || customerUser.Status is not UserStatus.Active)
         {
@@ -89,11 +95,11 @@ public class CreateCartHandler : IRequestHandler<CreateCartCommand, CartResult>
             SaleNumber = _saleNumberGenerator.GenerateNext(),
             SoldAt = command.Date,
             StoreName = command.Branch,
-            CreatedBy = loggedUser,
+            CreatedBy = currentUser,
             BoughtBy = customerUser,
         };
 
-        var cartItems = await CreateItemsAsync(command, loggedUser, cancellationToken);
+        var cartItems = await CreateItemsAsync(command, currentUser, cancellationToken);
 
         cart.AddItems(cartItems.ToArray());
 

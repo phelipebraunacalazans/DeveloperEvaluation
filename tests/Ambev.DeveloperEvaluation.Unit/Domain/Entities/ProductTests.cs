@@ -14,7 +14,7 @@ public class ProductTests
         var product = ProductTestData.GenerateValid();
 
         // Act
-        product.Update("Modified name", 1);
+        product.Update("Modified name", 1, 10);
 
         // Assert
         product.Name.Should().Be("Modified name");

@@ -112,7 +112,7 @@ public class ProductsController : BaseController
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The created product details</returns>
     [HttpPut("{id}")]
-    [ProducesResponseType(typeof(ApiResponseWithData<UpdateProductResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponseWithData<ProductResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
     {
@@ -128,7 +128,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<UpdateProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(_mapper.Map<UpdateProductResponse>(response));
+        return Ok(_mapper.Map<ProductResponse>(response));
     }
 
     /// <summary>
