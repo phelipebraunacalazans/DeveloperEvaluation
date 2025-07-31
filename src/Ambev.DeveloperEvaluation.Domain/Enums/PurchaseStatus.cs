@@ -11,4 +11,9 @@ public enum PurchaseStatus
     /// When a order was cancelled.
     /// </summary>
     Cancelled,
+
+    /// <summary>
+    /// When a order was deleted.
+    /// </summary>
+    Deleted,
 }

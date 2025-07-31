@@ -16,7 +16,7 @@ public class CreateProductCommand : IRequest<ProductResult>
     /// <summary>
     /// Gets or sets the price for the product.
     /// </summary>
-    public double Price { get; set; }
+    public decimal Price { get; set; }
     
     public int StockQuantity { get; set; }
 
