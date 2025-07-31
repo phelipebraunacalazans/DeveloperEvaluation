@@ -30,6 +30,14 @@ public interface IProductRepository
     Task<Product?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieve a list of products by your ids.
+    /// </summary>
+    /// <param name="ids">List of identifiers of product</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of product contains your ids.</returns>
+    Task<ICollection<Product>> ListByIdsAsync(Guid[] ids, CancellationToken cancellationToken = default);
+    
+    /// <summary>
     /// Deletes a products from the repository
     /// </summary>
     /// <param name="id">The unique identifier of the product to delete</param>
