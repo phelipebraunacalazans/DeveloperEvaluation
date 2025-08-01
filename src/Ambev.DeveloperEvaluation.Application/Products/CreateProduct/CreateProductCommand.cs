@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 /// <summary>
 /// Command for creating a new product.
 /// </summary>
-public class CreateProductCommand : IRequest<CreateProductResult>
+public class CreateProductCommand : IRequest<ProductResult>
 {
     /// <summary>
     /// Gets or sets the name of the product to be created.
@@ -16,7 +16,9 @@ public class CreateProductCommand : IRequest<CreateProductResult>
     /// <summary>
     /// Gets or sets the price for the product.
     /// </summary>
-    public double Price { get; set; }
+    public decimal Price { get; set; }
+    
+    public int StockQuantity { get; set; }
 
     public ValidationResultDetail Validate()
     {

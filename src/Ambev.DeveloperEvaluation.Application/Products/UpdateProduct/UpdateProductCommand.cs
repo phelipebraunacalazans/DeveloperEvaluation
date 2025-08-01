@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 
-public class UpdateProductCommand : IRequest<UpdateProductResult>
+public class UpdateProductCommand : IRequest<ProductResult>
 {
     /// <summary>
     /// The unique identifier of the product to retrieve
@@ -18,6 +18,8 @@ public class UpdateProductCommand : IRequest<UpdateProductResult>
     /// Gets or sets the price for the product.
     /// </summary>
     public decimal Price { get; set; }
+    
+    public int StockQuantity { get; set; }
 
     public ValidationResultDetail Validate()
     {

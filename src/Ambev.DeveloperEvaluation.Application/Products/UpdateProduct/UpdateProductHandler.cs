@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 
-public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, UpdateProductResult>
+public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, ProductResult>
 {
     private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -34,7 +34,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
     /// <param name="command">The UpdateProduct command</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The updated product details</returns>
-    public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
+    public async Task<ProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
         var validator = new UpdateProductValidator();
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
@@ -50,9 +50,9 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
         if (existingProduct is not null && existingProduct.Id != command.Id)
             throw new InvalidOperationException($"Product with name {command.Name} already exists");
 
-        product.Update(command.Name, command.Price);
+        product.Update(command.Name, command.Price, command.StockQuantity);
 
         await _unitOfWork.ApplyChangesAsync(cancellationToken);
-        return _mapper.Map<UpdateProductResult>(product);
+        return _mapper.Map<ProductResult>(product);
     }
 }

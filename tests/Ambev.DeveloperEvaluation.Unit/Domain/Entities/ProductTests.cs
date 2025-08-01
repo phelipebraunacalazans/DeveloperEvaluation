@@ -14,11 +14,71 @@ public class ProductTests
         var product = ProductTestData.GenerateValid();
 
         // Act
-        product.Update("Modified name", 1);
+        product.Update("Modified name", 1, 10);
 
         // Assert
         product.Name.Should().Be("Modified name");
         product.Price.Should().Be(1);
+        product.UpdatedAt.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Given_Product_When_Try_Set_Stock_Quantity_To_Negative_Should_Throw_Exception()
+    {
+        // Arrange
+        var product = ProductTestData.GenerateValid();
+
+        // Act
+        Action action = () => product.SetStockQuantity(-1);
+
+        // Assert
+        action.Should()
+            .Throw<ArgumentOutOfRangeException>()
+            .WithMessage("Quantity must not be negative value to the change quantity.*");
+    }
+
+    [Fact]
+    public void Given_Product_When_Set_Stock_Quantity_Then_Stock_Quantity_And_Update_Date_Should_Be_Changed()
+    {
+        // Arrange
+        var product = ProductTestData.GenerateValid();
+
+        // Act
+        product.SetStockQuantity(666);
+
+        //Assert
+        product.StockQuantity.Should().Be(666);
+        product.UpdatedAt.Should().NotBeNull();
+    }
+
+   
+
+    [Fact]
+    public void Given_Product_When_Decrease_All_Quantities_Stock_Should_Be_Zero()
+    {
+        // Arrange
+        var product = ProductTestData.GenerateValid();
+
+        // Act
+        product.DecreaseQuantity(product.StockQuantity);
+
+        // Assert
+        product.StockQuantity.Should().Be(0);
+        product.UpdatedAt.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Given_Product_When_Increase_Quantity_Stock_Should_Be_Changed()
+    {
+        // Arrange
+        var product = ProductTestData.GenerateValid();
+
+        // Act
+        var originalQuantity = product.StockQuantity;
+        product.IncreaseQuantity(1);
+
+        // Assert
+        product.StockQuantity.Should().Be(originalQuantity + 1);
         product.UpdatedAt.Should().NotBeNull();
     }
 

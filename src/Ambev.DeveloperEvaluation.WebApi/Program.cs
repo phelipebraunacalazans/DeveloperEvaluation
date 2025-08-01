@@ -5,9 +5,11 @@ using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
+using Ambev.DeveloperEvaluation.WebApi.Configuration;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Rebus.Config;
 using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
@@ -40,18 +42,10 @@ public class Program
 
             builder.RegisterDependencies();
 
-            builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApplicationLayer).Assembly);
+            builder.Services.RegisterWebApiServices();
 
-            builder.Services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssemblies(
-                    typeof(ApplicationLayer).Assembly,
-                    typeof(Program).Assembly
-                );
-            });
-
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
+            builder.Services.AddRebusMessaging();
+            
             var app = builder.Build();
             app.UseMiddleware<ValidationExceptionMiddleware>();
 
@@ -69,7 +63,7 @@ public class Program
             app.UseBasicHealthChecks();
 
             app.MapControllers();
-
+            app.Services.StartRebus();
             app.Run();
         }
         catch (Exception ex)
