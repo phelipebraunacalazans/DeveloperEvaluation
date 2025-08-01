@@ -93,6 +93,22 @@ public class Product : BaseEntity
     }
 
     /// <summary>
+    /// Set stock quantity directly.
+    /// </summary>
+    /// <param name="quantity">Quantity to change.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Occurs when try set negative value</exception>
+    public void SetStockQuantity(int quantity)
+    {
+        if (quantity < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must not be negative value to the change quantity.");
+        }
+
+        StockQuantity = quantity;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    
+    /// <summary>
     /// Performs validation of the user entity using the ProductValidator rules.
     /// </summary>
     /// <returns>

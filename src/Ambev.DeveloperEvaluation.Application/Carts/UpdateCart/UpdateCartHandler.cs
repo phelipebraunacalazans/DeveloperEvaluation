@@ -97,7 +97,7 @@ public class UpdateCartHandler: IRequestHandler<UpdateCartCommand, CartResult>
 
         var cartItems = await CreateItemsAsync(command, currentUser, cancellationToken);
 
-        ChangeCart(cart, command, customerUser, cartItems);
+        ChangeCart(cart, command, customerUser, currentUser, cartItems);
 
         if (_saleLimitReachedSpecification.IsSatisfiedBy(cart))
         {
@@ -116,6 +116,7 @@ public class UpdateCartHandler: IRequestHandler<UpdateCartCommand, CartResult>
         Cart cart,
         UpdateCartCommand command,
         User customerUser,
+        User currentUser,
         IEnumerable<CartItem> cartItems)
     {
         cart.Change(customerUser, command.Date, command.Branch);
@@ -123,12 +124,12 @@ public class UpdateCartHandler: IRequestHandler<UpdateCartCommand, CartResult>
         var itemsToRemove = cart.Items
             .Where(i => !cartItems.Any(ci => ci.ProductId == i.ProductId))
             .ToArray();
-        cart.RemoveItems(itemsToRemove);
+        cart.DeleteItems(currentUser, itemsToRemove);
 
         var existingItems = cartItems
             .Where(i => cart.Items.Any(ci => ci.ProductId == i.ProductId))
             .ToArray();
-        cart.UpdateItems(existingItems);
+        cart.ChangeQuantities(existingItems);
 
         var newItems = cartItems
             .Where(i => !cart.Items.Any(ci => ci.ProductId == i.ProductId))
